@@ -1,0 +1,487 @@
+#Chapter 2.1
+
+#GUI > Xserver > GNU Core > kernel > hardware
+
+#kernel is installed in:
+	\dev (hardware comms)  "Devices"
+	\sys (hardware comms)  "System"
+	\proc (process arch)   "Processes"
+	
+#see version of linux:
+lsb_release -a
+cat /etc/lsb_release 
+
+#see kernel version
+uname -r
+
+#GNU core utilities - synomonous with linux kernel but not actually "linux" on its own
+# eg ls is one such utility in GNU core utilities
+# check the version of GNU Core Utilities with:
+ls --version
+#what is in here? - file permissions, compilers, filesystem, programming languages, text manipulation and editing, shells
+
+#Xserver - display server for the X windows system, framework for the GUI to use. can work over network connections
+# check version
+sudo X -version
+
+# GUI eg Gnome, KDE, Cinnamon, Mate, Unity, XFCE, LXDE, Mate many more. (Unity is a fork of Gnome)
+
+#Package managers eg RPM (.rpm) - uses yum (red hat), dpkg (.deb) - uses apt (ubuntu)
+#Init software eg systemd (Fedora), initd (older linux dists)
+#linux distributions: ubuntu, redhat, fedora, centos, raspian, kali, opensuse
+# apt = advanced package tool - works with core libraries to install, communicate with repos, validate files upon reciept etc
+# yum = yellowdog updater, modified 
+# dnf - has replaced yum on fedora
+# synaptic - GUI for working with apt
+# NOTE most .rpm files are binaries ready to be installed. .srpm is "source rpm" which need to be compiled to binaries first
+# A package is a collection of files required to install something
+
+#netfilter - framework within linux kernel to fulfil firewalling (encryption, proxy, deep packet inspection)
+
+#embedded systems - hardware and tailored software, usually linux kernel, plus libraries and applicaitons to do a specific job
+#appA	appB
+#Libraries
+#High Level Abstractions
+#networking		files
+#Low-level interface
+#hardware
+
+#embedded sysem example = Android
+#often also called "system on a Chip" SoC
+
+#Linux in the Cloud - provide compute and storage 
+#Region - refers to continent part level eg AustraliaEast
+#Availability Zone - refers to data centres (or collections thereof) that are operated out of
+#Subnets - local network of virtual servers running in the cloud
+
+#Chapter 3 - Major open-source applications
+# Desktop apps eg 
+	LibreOffice incl Draw (Charts), Writer (word processor), Impress (presentations), Calc (spreadsheets), Math (calculator), Base (Database)
+	OpenOffice (Original thing of which LibreOffice is a fork)
+	Firefox (webbrowser)
+	Thunderbird (Mail client)
+	GIMP (image editing and drawing)
+# Server applications eg
+	Apache - HTTP web Server
+	NGINX ("Engine Ex") - webserver that can also be used as a reverse proxy, load balancing, mail proxy, http caching
+	MySQL - part of LAMP stack (Linux, Apache, MySQL, PHP/Perl/Python)
+	MariaDB - community developed fork of MySQL 
+	Samba - file sharing - commons between linux and windows - provides file and print services ,name resolution ,authentication and authorisation, service announcement
+	NFS (Network File System) - Distributed file system "protocol" (cos can put files on multiple cmputers as if its one.
+	ownCloud and a fork of it, NextCloud. NextCloud has all opensource, ownCloud has opensource for non enterprise bits but closed source for the enterprise bits
+# Development languages eg
+	shell eg bash, ksh - interpretted language, scripted as "shell scripts". text based, generally procedural
+	C programming language - general purpose, imperitive, basic low level programming language which needs to be compiled into a binary to running
+	java - class based object oriented programming language - needs to be compiled. Need to run in JVM on "any system" and source code need to be packaged properly. OpenJDK is entirely opensource implementation of the Java programming language. Originally closed source owned by Sun, since then as been mainly opensourced.
+	javascript - initially scripted only. Enables many intereactive webpages via client side runtimes - most browsers have a "javascript engine" ready to run javascript given to them by websites! HTML, CSS and javascript make up the www more or less.
+	perl - general purpose scripting language originally, now object oriented OR procedural. Perl5 mainly, although and Perl6 also exists and is very different. "duct tape of internet".
+	python - General purpose - interpretted. tries to have 'one method' to do anything - "pythonic". Tends ot make it easier to read.
+	php - PHP Hypertext Processor. For webdev (www development) generally. interpretted. can be embedded into html or run on command line.
+# can find good IDEs for all of the above languages on Linux!
+	
+#package manger use
+# rpm install from .rpm
+sudo rpm -i htop_2.0.2-1_amd64.rpm
+# rpm uninstall -- -e flag is for 'erase'
+sudo rpm -e htop 
+# dpkg install from .deb
+sudo dpkg -i htop_2.0.2-q.deb
+# dpkg uninstall
+sudo dpkg --remove htop 
+
+#installing from sourcecode
+#normally download a gzipped tarball - not that tar -xzf can be read as "tape archive" (tar) and "extract zipped file" (xzf) 
+tar -xzf htop-2.2.0.tar.gz
+# usually run a "./configure" preparatory shell scipt
+# then compile the source code
+make
+# after compiling the binaries, we install the software, also using make
+sudo make install 
+
+# find an applicaiton in apt cache
+apt-cache search mysql 
+
+#opensource and Free software licences (from completely free as in freedom to opensource but restricted a bit)
+#CCO 1.0  -> MIT -> BSDv3 -> Mozilla -> LGPL -> GPLv3
+#CCO 1.0  -> MIT -> BSDv3 -> Apache          -> GPLv3
+# "copyleft" means you adopt the licence of the thing you forked from
+# Free Software Foundation - approves many of the above licences, Open Source Initiative - similar role but for some of the more restrictive ones
+
+#Chapter 5 - Working in Linux
+#virtualisation relies on the abstraction of hardware
+#discover what flavour of linux we're running - try these three to see if we can find out. 
+cat /etc/*release*		# this looks for release files
+cat /etc/*issue*		# try to cat out the issue files
+lsb_release -a			# 
+hostnamectl				# only works in systemd based linux distributions
+
+# Chapter 6 - command line basics
+TERMINAL: keyboard -> STDIN -> process -> STOUT -> display
+TERMINAL: keyboard -> STDIN -> process -> STERR -> display
+UI		: command -> interpreter parses input -> application executes command -> result returned to UI 
+capture a command output (eg of pwd) into a variable
+var=$(pwd)
+echo $var
+# this would print /home/richard or something like that - my present working directory at the time I created the variable
+
+# QUOTING - ESCAPE CHARACTER
+# backslash \ is the bash escape cahracter and preserves the literal value to the next following character, with the single exception of newline
+# Singlequotes ' ' preserve the literal value of every character within the quotes, inlcuding the escape character
+# Doublequotes " " preserve the literal value of MOST characters, exceptions include $ (for variables), ' (for single quoting), \ (for escaping)
+
+# logins - current logged in users
+w
+# logins - last logins
+last
+
+# environment variables - show all environment variables
+env | sort
+# add your own binaries or scripts to your PATH variable
+PATH="$PATH:$HOME/scripts:$HOME/bin"
+# automatically add these locations to your PATH variable every time you log in
+echo 'PATH="$PATH:$HOME/scripts:$HOME/bin"' >> ~/.profile
+# NOTE that bash reads the .profile file ONLY if .bash_login or .bash_profile are NOT set. Usually I don't do this...
+
+#Chapter 7 - getting help
+# man pages "Manuals" typically installed when the program is installed. to view one for a command...
+man ls
+# search all man pages
+man -k list
+# inside man page, type "/" (forwardslash) to search for a specific string, n to go to next one, N to go back to previous one, q to quit
+# info pages are more detailed than man pages
+info ls
+# navigate using "n" (Next page), "p" Previous page, "u" (Up to section header), arrow keys to scroll
+
+# Chapter 8
+# FHS = Filesystem Hierarchy Standard
+/		root directory
+/bin 	user binaries eg code for ls, cd, cat etc
+/boot	static boot files - used when the machine boots
+/dev	device files eg to talk to keyboard ,screen, filesystem, networks etc 
+/etc	"et-see" - configuration files for various apps and utilities (often in /bin/ /sbin, /usr but also some in shell built-ins)
+/home	user home directories
+/lib	shared libraries used by multiple applications
+/mnt	mounted filesystems eg when we have 2 discs, nfs, samba shares etc 
+/opt	optional packages - by defafult this is usually empty
+/proc	kernel and process files - remembering that processes are effectively files themselves
+/root	root user's home directory (rather than keeping it in /home)
+/run	application state files
+/sbin	sysadmin binaries
+/srv	service data - tbc...?
+/tmp	temporary files stored by various processes and applicaitons from time to time. nothing persists here.
+/usr	user binaries (if the user decides not to keep them directly in /bin 
+/var	variable data files - mainly for logging
+
+# Chapter 9
+# creating, moving and deleting files
+rm -r # recursively remove
+cp -R # recursively copy
+mkdir /home/richard/{one,two,three,bin}      # makes all of those directories at the same time
+ls -lh # list with human readable file sizes
+for i in {1..10}; do touch file$i; done
+
+# Chapter 10
+# Archiving with tar - "tape archive"
+# options:	-c create archive
+#		-x extract archive (takes a copy and writes them out as a file outside of the archive)
+#		-r append to an archive 
+#		-t list the contents of an archive ("tail" the file)
+#		-f read from or write to a file
+tar -tf ./archive.tar
+# this views teh files and directories
+tar -cf archive.tar *.txt
+# note this creates an archive file called archive.tar containing all the txt files in the current directory
+# it does NOT remove files from the directory they were originally in - it only takes a copy of it and puts it in the archive file
+# withdraw files from the archive using globbing...
+tar xf archive.tar --wildcards 'file?'
+# delete directly form archive (rarely required - usually easier to extract all, delete the ones you don't want and rearchive)
+tar --delete --file=archive.tar file3
+
+# compression and disc usage
+df -h
+# more tar options:	-z compress the archive ("zip" - albeit there are different kinds of compression - not just zip)
+tar -czf archive.tar.gz *.txt ("create zipped file")
+# NOTE -z by default is gzip
+# other types of compression are bzip2
+tar -cjf archive.tar.bz2 *.txt
+# or "zip" - this is the one windows uses very commonly
+# add extra file to archive file
+tar -rf archive.tar extra.txt
+# check its addded
+tar -tf archive.tar | grep extra.txt ("tail file")
+# zip an archive file - rather than create a zipped archive from files in one move
+gzip -9 archive.tar archive.tar.gz.9
+# extract a file from a zipped archive
+tar -xzf archive.tar.gz9 file99.txt ("extract zipped file")
+
+# searching and finding
+# pipes			|
+# redirections		>, <, >>
+# grep using regular expressions - this returns anything that starts withPeter ir ends with Jane
+grep -E "^Peter|Jane$" file
+# this one looks for zero or more of the character that precedes it - in this case the letter "p"
+grep -E "Ap*le" file
+# this could inlcude ale (zero p's)
+grep -E "Ap+le" file
+# looks for one of more p's eg Appple
+grep -E "Ap?le" file
+# looks for one or zero p's - eg both Ale and Apple would be matched here
+grep -E "ap[p-z]le" file
+# this would match Capulet in file
+grep -E "^Richard*" file | wc -l
+# this counts the number of lines that start with Richard
+grep -E "^R..h$" file | wc -l
+# this counts the number of lines that start with R, end in h and have exactly 2 characters between them
+grep -v boring file
+# this greps out all lines WITHOUT boring in them. -v is 'inVerse'
+
+# shell scripting
+~/script.sh
+> #!/bin/bash
+> echo "What is your name?"
+> read name
+> echo -e "Hello $name!\n"
+chmod u+x script.sh   |    chmod 755 script.sh  ## note 755 = (4+2+1, 4+0+1, 4+0+1) = (yes:yes:yes, yes:no:yes, yes:no:yes)
+# add your own home bin directory into your PATH variable
+PATH="$PATH:$HOME/bin"
+# can even put this into your bashrc file
+echo 'PATH="$PATH:$HOME/bin"' >> ~/.bashrc
+
+# text editors - eg vim and nano
+# in vim - this adds line numbers
+: set nu  
+# in vim, this searches for string
+/string
+
+
+# Operating systems and distributions
+# linux, windows ,macOS
+# linux is a vast collection of softwares. EVERYTHING - all levels of software - has a version / release 
+# lots of things also has a patch level
+uname -r ## shows the kernel release... -v shows the version
+cat /etc/issue  # Ubuntu 18.04.2 LTS would mean 2018 4th month 2nd update Long Term Support
+# Standard Distribution Release <----------------> Rolling Release
+# stable <------------------------------------------> cutting edge
+
+# hardware
+# motherboard connecting cpu, memory, storage, bios, nics, keyboard/mouse, display
+# cpu - including cores on that cpu
+cat /proc/cpuinfo
+lscpu  # "listcpu"
+# see free memory (inlcuding swap which is on storage) - NB -m shows in megabytes 
+free -m  
+# or how much memory is installed
+cat /proc/meminfo  "memory information"
+# secondary storage (HDD, SSD, DVD)
+df -h | grep /dev/   ## "disk free"... and -h means 'human-readable'
+#motherboard information - useful for a number of things
+dmidecode   # might need to use sudo for this one
+# hardware / firmware bios
+lshw   # might need to use sudo before it - "list hardware"
+
+# where is data stored in linux?
+# /boot
+ # used to be on a different aprtition to /etc/ - but is really just an "etc" for booting linux - linux kernel configs
+ # contains: 
+ #  /boot/grub/          # this is the bootloader
+cat /boot/grub/grub.cfg  # look at the grub configuration parameters - generally use utilities to adjust these rather than editing this file directly
+ #  /boot/vmlinuz...     # these are kernels - with version numbers in filename generally
+uname -r   # check which kernel you;re using right now - is it one of those (it should be!)
+ #  /boot/initrd.img...  # inital RAM discs . image files
+ #  /boot.System.map...  # system maps - relate the kernel files to the RAM disc files...? Note they should have correlating version numbers
+ #  /boot/config...      # configs for the kernel(s)
+cat /boot/config...   # look at the kernel configs. note that would woudln't edit this file generally - you'd use utilities to reset certain values
+# /etc
+# mostly configuration files for applications and stuff
+cat /etc/fstab # maps what disc partitions to mount automatically
+# UUID defines the "filesystem"
+blkid  # this shows us the UUIDs of the filesystems we have installed(mounted) eg /dev/sda1 is UUID=3hg6-f453-f63j4v6g-4564... or whatever ("partition mount points")
+# users
+cat /etc/passwd
+# 7 fields: username, password (moved to /etc/shadow and is a hash not the actual password), userid, groupid, geckos (long name), home directory, login shell
+# groups
+cat /etc/group
+# group name, group password (doesn't exist), groupID, members of the group
+# again, don't edit this file directly - use utilities
+# hosts - mapping of hosts to ip addresses
+cat /etc/hosts
+# contains 2 fields: ip address, hostname
+# hostname resolution
+cat /etc/resolv.conf
+# contains nameserver (dns nameserver)
+# application configs eg for vim
+cat /etc/vim/vimrc   # note that in vimrc - rc stands for "resource configuration" and is a common addendum to filenames to indicate it is a file that contains resource configuration flags and switches
+# /sys/.... ram filesystem is kept in /sys
+# "the sys filesystem is the filesystem under which the /sys directory in mounted"
+# in other words, the stuff in the sys directory shows you what the sys filesystem "looks like"...
+mount | grep sysfs
+# this shows us that the filesystem "sysfs" is mounted onto /sys/
+# if we ls in /sys we see directories for block devices, filesystems, kernels, firmware etc
+# it is an export of the files copied into RAM
+
+# processes
+# everything running on the machine at any one time  -recommend looking at "man ps"
+ps aux          # this shows processes running in BSD format
+ps -eF          # this shows processes running in linux format
+ps -U d602373   # this shows processes spawns by user d602373
+top             # by PID (process identifier), user and "PR" (priority) - also recommend "man top"
+# the /proc (pseudo)filesystem has data on all running prcoesses
+# eg PID 12345 details are kept in the directory /proc/12345/
+ls /proc/12345
+# inside all these subdirectories contains lots of info about that process
+# can check our current system load by running the below:
+cat /proc/loadavg   # yeilds
+# also can use uptime
+uptime
+
+# dev filesystem - generalised block devices like hard drives eg sda and their partitions eg sda1
+# /dev/mapper is used to map block devices to something else (and back again...?)
+
+# system messaging 
+# these are messages sent by our kernel through the kernel ring buffer
+# NB a "ring" buffer us a buffer of constant size - new message sin it push older ones out
+# dmesg prints the kernel ring buffer
+# its usually used for investigating hardware issues - eg to search for 
+dmesg | grep -i usb
+
+# logging - covers both system logging and application logging, plus event logs, system logs, service logs, kernel logs
+cat /var/log/messages      # general system logs and messages
+cat /var/log/syslog        # general log for system
+ # contains date, time, user, system in use, messages from subsystem that generated the log
+cat /var/log/auth.log      # authentication logs
+cat /var/log/secure        # authentication logs for red hat systems
+cat /var/log/boot.log      # system boot logs
+cat /var/log/cron.log      # cron job logs
+cat /var/log/kern.log      # kernel logs - same as dmesg stuff
+cat /var/log/faillog       # authentication failures - very important for internet facing systems. can get large
+
+# Networking
+# switches forward packets on the same network, routers forward packets from one network to another
+# routers are often also called gateways - can be mulitple on any one local network
+ip addr show
+# CIDR notation inlcudes /24 (or something like that) eg 10.0.3.50/27
+# /24 shows the "subnet"
+ping -c 1 example.com      # -c means count of ICMP messages is one.
+# sometimes ping will be blocked - other methods to test connectivity includes:
+curl -I example.com              # uses a web method
+wget examples.com/index.html     # tries to get a specific webpage on port 80 or 443
+tracepath example.com
+traceroute example.com
+telnet example.com 443           # here we can specify the port we want to test connectivity on
+# DNS - Domain Name System - protocol that enables us to use domain names rather than IP addresses
+dig www.linuxacademy.com
+dig @1.1.1.1 www.linuxacademy.com      # use a different dns server
+# returns IP address, including the record type eg Class A ip address
+# dns config is listed in /etc/resolv.conf
+cat /etc/resolv.conf | grep -v "#"
+# use host command to translate a domain name to an IP address (ipv4 or ipv6)
+host example.com      # this will use the hosts file or the dns server to discover an IP address
+cat /etc/hosts
+# this file provides privately required hostnames to IP address mappings
+# dns resolution happens in numerous stages. for example, for www.example.com.
+#  resolve last .           - "implied dot"
+#  resolve .com.            - this is the tld "Top Level Domain" and isn't done by nameservers
+#  resolve example.com.     - this is the big that dns starts with
+#  resolve www.example.com. - dns might also cover this part as well - although sometimes it is just handled by server once example.com's IP address is provided   
+
+# client network configuration
+ip route show
+# This shows the routing table - top row is 'default' route
+# subsequent line generally shows the local network
+# any other lines would show where certain other destinations might be sent to 
+ifconfig      # "Interface configuration"
+nmcli         # "network manager command line interface" - requires network-manager to have been installed
+netstat       # prints all sorts including -t tcp   -l listening   -n numeric (IP addresses not hostnames)   -p processID running the session
+ss            # "socket statistics"   eg ss -lntp
+cat /etc/services | grep 22
+# the above looks through the services generally assigned to each port as standard so we can find out what each port number usually is
+
+# Basic linux security
+su                         # "switch user" - without a user named it attempts to switch to root user
+sudo                       # switch to root user for one command
+sudo cat /etc/sudoers      # who (users and groups) can use sudo command
+sudo cat /etc/passwd
+# d602373:x:1000:1000:,,,:/home/d602373:/bin/bash
+# username:password:userid:groupid:general electric comprehensive operating system ("gecos"):home directory:login shell
+# note a user can only have 1 primary grop but be in lots of otehr groups
+sudo cat /etc/shadow
+# d602373:$6$IPtVoQsw$lGckUfUJrgT4lSoE792BywAWPXTBYdFgMPo.tmtZiNohFEtNWUJ/XPHEK1TmwattaV9I7Hu2GJnrBoCJk5w4Q/:19116:0:99999:7:::
+# username:password hash:number of days since password was changed:minimum numbers of days between password changes:number of days before teh password expires to warn the user:number of days since expiration:absolute expiration date
+cat /etc/group
+# this lists the groups, its password (not used), groupid and members (excluding the "primary user" which is usually the user of the same name as the group)
+
+# system users (distinct from normal users) - also known as "service accounts"
+# generally deployed when applications are installed
+# seperate functional privs from application and services eg install apache, it runs a service httpd, it will install a user called www-data (usually - depends on dist)
+# normally don't have a login shell
+# system user home directory usually listed as the applicaiton install directory
+# user shells for system users are often listed as /bin/false   or /usr/sbin/nologin
+id sysuser
+# this yeilds some details of the user including the uid and groupid
+getent passwd sysuser
+# "get entity from database passwd".. this does more or less the same as cat'ing the passwd file
+
+# Managing users and groups
+sudo useradd lachlan                    # lachlan is the username or just "user"
+sudo useradd -m edith			# create user edith with home directory (using defaults)
+userdel martha                          # delete user martha 
+cat /etc/passwd | lachlan               # he has a new user account with a new userid (the number). Also no gecos or home directory, default shell.
+cat /etc/group | lachlan                # he is in group lachlan ONLY
+sudo cat /etc/shadow | lachlan          # note has no password
+sudo passwd lachlan                     # this allows us to manually enter a password at a prompt
+sudo usermod -s /bin/bash lachlan       # now he has a different shell
+sudo mkhomedir_helper lachlan           # this will put a home directory in /home for lachlan, with stuff in /etc/skel
+# NOTE /etc/skel contains the stanadard stuff to go into home directory when we create them
+sudo groupadd smarties
+sudo usermod -a -G smarties lachlan     # -a = append  -G = Groups  NOTE need to logout and logback in again for this to take effect
+# now if we wanted to add smarties group members to the sudoers file we edit it with visudo
+sudo visudo                             # this opens the /etc/sudoers file with vi so we can edit it
+## go down to the section that says "# Allow members of group to execute any command" and add:
+%smarties ALL=(ALL:ALL) ALL             # note that this will be the same as "%sudo ALL=(ALL:ALL) ALL" which is how sudo group members get to do sudo
+
+# users - IDs and misc
+# UID 0              - root (always)
+# UID 1-99           - system users 
+# UID 100+           - standard users, aka service accounts (although some oss start at 1000 or even higher)
+# UID 65534          - reserved for "nobody"
+
+# File permissions and Ownership
+# -rwxr-xr-- 12 richard richard 31 Jun 25 12:57 testfile       # rwx = owner user   r-w = group     r-- = everyone
+## chown - change group ownership
+sudo chown :powerbiusers testfile ; ls -l
+# -rwxr-xr-- 12 richard powerbiusers 31 Jun 25 12:57 testfile 
+## change owner user
+sudo chown melissa testfile ; ls -l
+# -rwxr-xr-- 12 melissa powerbiusers 31 Jun 25 12:57 testfile 
+## chmod - change file mode bits - basically means access rights to the file
+sudo chmod 764 testfile ; ls -l    # note 7 is for the owner user, 6 is for the group, 4 is for everyone
+# -rwxrw-r-- 12 richard powerbiusers 31 Jun 25 12:57 testfile 
+## -R recurively applies the change. Works for chmod and chown similarly
+## locking user accounts
+sudo passwd -l melissa      # note -l flag on passwd command "locks" user account
+
+Special files and directories
+/tmp        # this is cleared on every boot. Note files in here still have permissions on them!
+/var/tmp    # this is persistent across boots generally - might get cleaned every 30 days
+mktemp      # this creates a temporary file with randomised filename in /tmp
+mktemp ; ls /tmp
+# tmp.dh72H6dfR
+# this is useful cos we can write the following line then use the vaiable tempfile in our code
+temporaryfile=$(mktemp)     # Note this is executing mktemp and putting the resulting file in the variable "temporaryfile".
+ls -l /home/richard > $temporaryfile
+cat $temporaryfile 
+# -rwxrw-r-- 12 richard powerbiusers 31 Jun 25 12:57 testfile
+## can also create prefixes for files - but it creates them in your current directory
+mktemp projcode.XXXXXXXX
+# projcode.QZDBFrV6        # creates the new file in the current directory and echos out the filename
+## Symbolic links aka symlinks
+ln -s linkingfile /tmp/tmp.qWxktbZH
+cat linkingfile        ## this cats out /tmp/tmp.qWxktbZH instead.
+## NOTE we can delete /tmp/tmp.qWxktbZH and the symlink will still be there and will still point to the same place - but it will no longer work
+
+
+
+
+
+
+
